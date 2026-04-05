@@ -1,6 +1,9 @@
-variable "vpc_cidr" {
-  description = "VPC CIDR block for the EKS cluster"
-  type = string
+variable "vpc_config" {
+  description = "VPC CIDR block details for the EKS cluster"
+  type = object({
+    vpc_cidr = string
+    vpc_name = string
+  })
 }
 
 variable "cluster_name" {
@@ -8,12 +11,16 @@ variable "cluster_name" {
   type = string
 }
 
-variable "subnet_cidr" {
+variable "subnet_config" {
   description = "Subnet CIDR block for the EKS cluster"
-  type = list(string)
+  type = object({
+    subnet_cidr = list(string)
+    subnet_name = string
+    availability_zone = string
+  })
 }
 
-variable "availability_zone" {
-  description = "Availability zone for the EKS cluster"
-  type = string
+variable "public_or_private" {
+  description = "Either to launch a private or public subnet"
+  type = bool
 }
