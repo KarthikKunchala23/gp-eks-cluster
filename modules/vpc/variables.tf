@@ -6,11 +6,6 @@ variable "vpc_config" {
   })
 }
 
-variable "cluster_name" {
-  description = "Name of the EKS cluster"
-  type = string
-}
-
 variable "subnet_config" {
   description = "Subnet CIDR block for the EKS cluster"
   type = object({

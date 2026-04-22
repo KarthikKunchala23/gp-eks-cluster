@@ -24,7 +24,7 @@ resource "aws_internet_gateway" "gp-eks-igw" {
   vpc_id = aws_vpc.gp-eks-vpc.id
 
   tags = {
-    Name = "${var.cluster_name}-igw"
+    Name = "${var.vpc_config.vpc_name}-igw"
   }
 }
 
@@ -37,7 +37,7 @@ resource "aws_route_table" "gp-eks-public-rt" {
   }
 
   tags = {
-    Name = "${var.cluster_name}-public-rt"
+    Name = "${var.vpc_config.vpc_name}-public-rt"
   }
 }
 
@@ -45,7 +45,7 @@ resource "aws_route_table" "gp-eks-private_rt" {
   vpc_id = aws_vpc.gp-eks-vpc.id
 
   tags = {
-    Name = "${var.cluster_name}-private-rt"
+    Name = "${var.vpc_config.vpc_name}-private-rt"
   }
 }
 
