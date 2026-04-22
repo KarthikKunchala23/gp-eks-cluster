@@ -12,7 +12,7 @@ resource "aws_subnet" "gp-eks-subnet" {
 
     vpc_id = aws_vpc.gp-eks-vpc.id
     cidr_block = var.subnet_config.subnet_cidr[count.index]
-    availability_zone = var.subnet_config.availability_zone[count.index]
+    availability_zone = var.subnet_config.availability_zone[count.index % length(var.subnet_config.availability_zone)]
     map_public_ip_on_launch = var.subnet_config.subnet_type[count.index] == "public"
     tags = {
         Name = "${var.subnet_config.subnet_name}-${var.subnet_config.subnet_type[count.index]}-${count.index}"
