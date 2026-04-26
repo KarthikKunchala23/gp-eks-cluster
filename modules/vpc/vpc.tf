@@ -44,7 +44,7 @@ resource "aws_route_table" "gp-eks-public-rt" {
 resource "aws_route_table" "gp-eks-private_rt" {
   vpc_id = aws_vpc.gp-eks-vpc.id
 
-  route = {
+  route {
     cidr_block = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.gp-eks-nat-gateway.id
   }
