@@ -28,7 +28,15 @@ variable "cluster_version" {
 
 variable "encryption_config" {
   description = "EKS cluster encryption configuration"
-  default = []
+  default = [
+    {
+      provider = {
+        kms_key_arn = "arn:aws:kms:ap-south-1:897722700244:key/c1f0ad65-949a-4909-baef-47383af4ecf2"
+      }
+      resources = ["secrets"]
+    }
+  ]
+  
 }
 
 variable "env" {
@@ -46,3 +54,27 @@ variable "ebs_csi_driver_policy" {
   default     = ""
 }
 
+variable "node_instance_type" {
+  description = "EC2 instance type for EKS worker nodes"
+  default     = "t3.medium"
+}
+
+variable "node_desired_size" {
+  description = "Desired number of worker nodes in the EKS cluster"
+  default     = 2
+}
+
+variable "node_min_size" {
+  description = "Minimum number of worker nodes in the EKS cluster"
+  default     = 1
+}
+
+variable "node_max_size" {
+  description = "Maximum number of worker nodes in the EKS cluster"
+  default     = 3
+}
+
+variable "disk_size" {
+  description = "instance size of eks nodes"
+  default = 20
+}
