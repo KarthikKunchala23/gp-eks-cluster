@@ -61,8 +61,16 @@ resource "aws_route_table_association" "gp-eks-rt-association" {
   route_table_id = var.subnet_config.subnet_type[count.index] == "public" ? aws_route_table.gp-eks-public-rt.id : aws_route_table.gp-eks-private_rt.id
 }
 
+resource "aws_eip" "gp-eks-nat-eip" {
+  domain = "vpc"
+
+   tags = {
+    Name = "${var.vpc_config.vpc_name}-eip"
+  }
+}
+
 resource "aws_nat_gateway" "gp-eks-nat-gateway" {
-  allocation_id = aws_internet_gateway.gp-eks-igw.id
+  allocation_id = aws_eip.gp-eks-nat-eip.id
   subnet_id = [ for s in aws_subnet.gp-eks-subnet : s.id if s.tags.Type == "public" ][0]
 
   tags = {
