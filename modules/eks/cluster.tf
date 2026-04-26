@@ -89,6 +89,11 @@ resource "aws_eks_node_group" "default" {
   disk_size = var.disk_size
 
   instance_types = [var.node_instance_type]
+
+  launch_template {
+    id = aws_launch_template.eks_nodes_lt.id
+    version = "$Latest"
+  }
   ami_type = var.ami_type != "" ? var.ami_type : "AL2023_x86_64_STANDARD"
 
   depends_on = [aws_eks_cluster.gp-eks-cluster]
