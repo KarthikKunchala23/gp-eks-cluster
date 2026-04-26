@@ -15,3 +15,34 @@ variable "subnet_config" {
     subnet_type       = ["public", "public", "private", "private"]
   }
 }
+
+variable "cluster_name" {
+  description = "Name of the EKS cluster"
+  default     = "gp-eks-cluster"
+}
+
+variable "cluster_version" {
+  description = "Kubernetes version for the EKS cluster"
+  default     = "1.31"
+}
+
+variable "encryption_config" {
+  description = "EKS cluster encryption configuration"
+  default = []
+}
+
+variable "env" {
+  description = "Environment tag for resources"
+  default     = "dev"
+}
+
+variable "ami_type" {
+  description = "AMI type for EKS worker nodes"
+  default     = "AL2_x86_64"
+}
+
+variable "ebs_csi_driver_policy" {
+  description = "IAM Policy for EBS CSI DRIVER"
+  default     = ""
+}
+
