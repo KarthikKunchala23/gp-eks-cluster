@@ -22,14 +22,10 @@ variable "ami_type" {
 
 variable "encryption_config" {
   description = "EKS cluster encryption configuration"
-  type = list(object({
-    provider = object({
-      kms_key_arn = string
-    })
-    resources = list(string)
-  }))
-  default = []
-  
+  type = object({
+    kms_key_arn = string
+    resources   = list(string)
+  })
 }
 
 variable "disk_size" {
