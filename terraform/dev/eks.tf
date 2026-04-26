@@ -3,7 +3,7 @@ module "eks" {
     cluster_name = var.cluster_name
     kubernetes_version = var.cluster_version
     private_subnets = module.eks-vpc.private_subnet_ids
-    encryption_config = var.encryption_config
+    encryption_config = [var.encryption_resources, var.kms_key_arn]
     env = var.env
     ami_type = var.ami_type
     node_instance_type = var.node_instance_type

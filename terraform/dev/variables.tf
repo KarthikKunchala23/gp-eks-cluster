@@ -26,19 +26,16 @@ variable "cluster_version" {
   default     = "1.31"
 }
 
-variable "encryption_config" {
+variable "kms_key_arn" {
   description = "EKS cluster encryption configuration"
-  default = [
-    {
-      provider = {
-        kms_key_arn = "arn:aws:kms:ap-south-1:897722700244:key/c1f0ad65-949a-4909-baef-47383af4ecf2"
-      }
-      resources = ["secrets"]
-    }
-  ]
-  
+  default     = "arn:aws:kms:ap-south-1:897722700244:key/c1f0ad65-949a-4909-baef-47383af4ecf2"
 }
 
+variable "encryption_resources" {
+  description = "EKS cluster encryption configuration"
+  default     = ["secrets"]
+  
+}
 variable "env" {
   description = "Environment tag for resources"
   default     = "dev"
