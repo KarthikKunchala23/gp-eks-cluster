@@ -18,13 +18,6 @@ resource "aws_eks_cluster" "gp-eks-cluster" {
         "scheduler"
     ]
 
-
-    kubernetes_network_config {
-      elastic_load_balancing {
-        enabled = true
-      }
-    }
-
     encryption_config {
         provider {
             key_arn = var.encryption_config.kms_key_arn

@@ -116,7 +116,7 @@ resource "aws_iam_role" "gp_eks_addons" {
 resource "aws_iam_policy" "gp_ebs_csi_driver_policy" {
   name = "${var.cluster_name}-ebs-csi-driver-policy"
   description = ("IAM policy for EBS CSI Driver")
-  policy = var.ebs_csi_driver_policy != "" ? file("${path.module}/var.ebs_csi_driver_policy") : <<POLICY
+  policy = var.ebs_csi_driver_policy != "" ? file(var.ebs_csi_driver_policy) : <<POLICY
   {
     "Version": "2012-10-17",
     "Statement": [
@@ -144,7 +144,7 @@ resource "aws_iam_policy" "gp_ebs_csi_driver_policy" {
           "ec2:DescribeNetworkInterfaces",
           "ec2:CreateSnapshot",
           "ec2:DeleteSnapshot",
-          "ec2:DescribeSnapshots",
+          "ec2:DescribeSnapshots"
         ],
         "Resource": "*"
       }
