@@ -17,4 +17,5 @@ module "eks" {
     vpc_id = module.eks-vpc.vpc_id
     ebs_csi_driver_policy = var.ebs_csi_driver_policy   
     public_subnets = module.eks-vpc.public_subnet_ids
+    depends_on = [ module.eks-vpc.aws_nat_gateway.gp-eks-nat-gateway ]
 }
