@@ -23,7 +23,7 @@ variable "cluster_name" {
 
 variable "cluster_version" {
   description = "Kubernetes version for the EKS cluster"
-  default     = "1.31"
+  default     = "1.34"
 }
 
 variable "kms_key_arn" {
@@ -43,7 +43,7 @@ variable "env" {
 
 variable "ami_type" {
   description = "AMI type for EKS worker nodes"
-  default     = "AL2_x86_64"
+  default     = "AL2023_x86_64_STANDARD"
 }
 
 variable "ebs_csi_driver_policy" {
