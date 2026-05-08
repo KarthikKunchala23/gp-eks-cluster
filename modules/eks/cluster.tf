@@ -2,7 +2,8 @@ resource "aws_eks_cluster" "gp-eks-cluster" {
     name = var.cluster_name
 
     access_config {
-        authentication_mode = "API"
+        authentication_mode = "API_AND_CONFIG_MAP"
+        bootstrap_cluster_creator_admin_permissions = true
     }
 
     role_arn = aws_iam_role.gp-eks-cluster-role.arn
