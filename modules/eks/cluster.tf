@@ -80,6 +80,7 @@ resource "aws_eks_node_group" "gp-eks-node-group" {
   }
 
   capacity_type = "SPOT"
+  instance_types = [var.node_instance_type]
   # launch_template {
   #   id = aws_launch_template.eks_nodes_lt.id
   #   version = "$Latest"
