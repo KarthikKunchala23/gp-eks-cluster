@@ -90,72 +90,72 @@ resource "aws_iam_role_policy_attachment" "gp_node_AmazonEKS_CNI_Policy" {
 
 
 # IAM Role for eks addons
-data "aws_iam_policy_document" "gp_eks_addons_assume_role_policy" {
-  statement {
-    actions = [ "sts:AssumeRoleWithWebIdentity" ]
-    effect = "Allow"
+# data "aws_iam_policy_document" "gp_eks_addons_assume_role_policy" {
+#   statement {
+#     actions = [ "sts:AssumeRoleWithWebIdentity" ]
+#     effect = "Allow"
 
-    condition {
-      test = "StringEquals"
-      variable = "${replace(aws_iam_openid_connect_provider.gp_eks.url, "https://", "")}:sub"
-      values = [ "system:serviceaccount:kube-system:ebs-csi-controller-sa" ]
-    }
+#     condition {
+#       test = "StringEquals"
+#       variable = "${replace(aws_iam_openid_connect_provider.gp_eks.url, "https://", "")}:sub"
+#       values = [ "system:serviceaccount:kube-system:ebs-csi-controller-sa" ]
+#     }
 
-    principals {
-      identifiers = [ aws_iam_openid_connect_provider.gp_eks.arn ]
-      type = "Federated"
-    }
-  }
-}
+#     principals {
+#       identifiers = [ aws_iam_openid_connect_provider.gp_eks.arn ]
+#       type = "Federated"
+#     }
+#   }
+# }
 
-resource "aws_iam_role" "gp_eks_addons" {
-  name = "${var.cluster_name}-addons-role"
-  assume_role_policy = data.aws_iam_policy_document.gp_eks_addons_assume_role_policy.json
-}
+# resource "aws_iam_role" "gp_eks_addons" {
+#   name = "${var.cluster_name}-addons-role"
+#   assume_role_policy = data.aws_iam_policy_document.gp_eks_addons_assume_role_policy.json
+# }
 
-resource "aws_iam_policy" "gp_ebs_csi_driver_policy" {
-  name = "${var.cluster_name}-ebs-csi-driver-policy"
-  description = ("IAM policy for EBS CSI Driver")
-  policy = var.ebs_csi_driver_policy != "" ? file(var.ebs_csi_driver_policy) : <<POLICY
-  {
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": [
-          "ec2:CreateVolume",
-          "ec2:DeleteVolume",
-          "ec2:AttachVolume",
-          "ec2:DetachVolume",
-          "ec2:DescribeVolumes",
-          "ec2:DescribeInstances",
-          "ec2:DescribeVolumeStatus",
-          "ec2:DescribeAvailabilityZones",
-          "ec2:DescribeTags",
-          "ec2:CreateTags",
-          "ec2:DeleteTags",
-          "ec2:ModifyVolume",
-          "ec2:DescribeInstanceStatus",
-          "ec2:DescribeInstanceTypes",
-          "ec2:DescribeRegions",
-          "ec2:DescribeSubnets",
-          "ec2:DescribeSecurityGroups",
-          "ec2:DescribeVpcs",
-          "ec2:DescribeNetworkInterfaces",
-          "ec2:CreateSnapshot",
-          "ec2:DeleteSnapshot",
-          "ec2:DescribeSnapshots"
-        ],
-        "Resource": "*"
-      }
-    ]
-  }
-POLICY
-}
+# resource "aws_iam_policy" "gp_ebs_csi_driver_policy" {
+#   name = "${var.cluster_name}-ebs-csi-driver-policy"
+#   description = ("IAM policy for EBS CSI Driver")
+#   policy = var.ebs_csi_driver_policy != "" ? file(var.ebs_csi_driver_policy) : <<POLICY
+#   {
+#     "Version": "2012-10-17",
+#     "Statement": [
+#       {
+#         "Effect": "Allow",
+#         "Action": [
+#           "ec2:CreateVolume",
+#           "ec2:DeleteVolume",
+#           "ec2:AttachVolume",
+#           "ec2:DetachVolume",
+#           "ec2:DescribeVolumes",
+#           "ec2:DescribeInstances",
+#           "ec2:DescribeVolumeStatus",
+#           "ec2:DescribeAvailabilityZones",
+#           "ec2:DescribeTags",
+#           "ec2:CreateTags",
+#           "ec2:DeleteTags",
+#           "ec2:ModifyVolume",
+#           "ec2:DescribeInstanceStatus",
+#           "ec2:DescribeInstanceTypes",
+#           "ec2:DescribeRegions",
+#           "ec2:DescribeSubnets",
+#           "ec2:DescribeSecurityGroups",
+#           "ec2:DescribeVpcs",
+#           "ec2:DescribeNetworkInterfaces",
+#           "ec2:CreateSnapshot",
+#           "ec2:DeleteSnapshot",
+#           "ec2:DescribeSnapshots"
+#         ],
+#         "Resource": "*"
+#       }
+#     ]
+#   }
+# POLICY
+# }
 
-resource "aws_iam_policy_attachment" "gp_ebs_csi_driver_attach" {
-  name       = "${var.cluster_name}-ebs-csi-driver-attach"
-  policy_arn = aws_iam_policy.gp_ebs_csi_driver_policy.arn
-  roles      = [aws_iam_role.gp_eks_addons.name]
+# resource "aws_iam_policy_attachment" "gp_ebs_csi_driver_attach" {
+#   name       = "${var.cluster_name}-ebs-csi-driver-attach"
+#   policy_arn = aws_iam_policy.gp_ebs_csi_driver_policy.arn
+#   roles      = [aws_iam_role.gp_eks_addons.name]
   
-}
+# }
