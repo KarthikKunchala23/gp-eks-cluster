@@ -75,3 +75,25 @@ variable "disk_size" {
   description = "instance size of eks nodes"
   default = 20
 }
+
+### Additional variables for VPC configuration of EKS
+variable "endpoint_private_access" {
+  description = "Enable private access to EKS API server endpoint"
+  default     = true
+}
+
+variable "endpoint_public_access" {
+  description = "Enable public access to EKS API server endpoint"
+  default     = true
+}
+
+variable "public_cidr" {
+  description = "CIDR block for public access to EKS API server endpoint"
+  default     = ["106.215.174.224/32"]
+}
+
+variable "bootstrap_self_managed_addons" {
+  description = "Whether to keep add-ons self managed by cluster or custom managed"
+  type        = bool
+  default     = true
+}

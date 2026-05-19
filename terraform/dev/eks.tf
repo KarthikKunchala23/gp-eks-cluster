@@ -18,4 +18,8 @@ module "eks" {
     ebs_csi_driver_policy = var.ebs_csi_driver_policy   
     public_subnets = module.eks-vpc.public_subnet_ids
     depends_on = [ module.eks-vpc ]
+    endpoint_private_access = var.endpoint_private_access
+    endpoint_public_access  = var.endpoint_public_access
+    public_cidr             = var.public_cidr
+    bootstrap_self_managed_addons = var.bootstrap_self_managed_addons
 }
