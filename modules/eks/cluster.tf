@@ -9,7 +9,7 @@ resource "aws_eks_cluster" "gp-eks-cluster" {
     role_arn = aws_iam_role.gp-eks-cluster-role.arn
     version = var.kubernetes_version
 
-    bootstrap_self_managed_addons = true
+    bootstrap_self_managed_addons = var.bootstrap_self_managed_addons
 
     enabled_cluster_log_types = [
         "api",
@@ -27,9 +27,9 @@ resource "aws_eks_cluster" "gp-eks-cluster" {
     }
 
     vpc_config {
-        endpoint_private_access = true
-        endpoint_public_access = false
-        public_access_cidrs = [ "27.6.92.85/32" ]
+        endpoint_private_access = var.endpoint_private_access != null ? var.endpoint_private_access : false
+        endpoint_public_access = var.endpoint_public_access != null ? var.endpoint_public_access : true
+        public_access_cidrs = var.public_cidr
 
         subnet_ids = var.private_subnets
         security_group_ids = [aws_security_group.eks_cluster_sg.id]

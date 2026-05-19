@@ -45,3 +45,27 @@ variable "ebs_csi_driver_policy" {
   type        = string
   default     = ""
 }
+
+variable "public_cidr" {
+  description = "Public Ip CIDR to access EKS Endpoint"
+  type = list(string)
+  default = []
+}
+
+variable "bootstrap_self_managed_addons" {
+  description = "Whether to keep add-ons self managed by cluster or custom managed"
+  type        = bool
+  default     = false
+}
+
+variable "endpoint_private_access" {
+  description = "EKS Cluster endpoint private access"
+  type = bool
+  default = false
+}
+
+variable "endpoint_public_access" {
+  description = "EKS Cluster endpoint public access"
+  type = bool
+  default = false
+}
