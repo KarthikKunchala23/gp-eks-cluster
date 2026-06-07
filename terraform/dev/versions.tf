@@ -9,7 +9,8 @@ terraform {
   backend "s3" {
     bucket = "gp-project-s3-cindia"
     key    = "eks/terraform.tfstate"
-    dynamodb_table = "terraform-lock-table"
+    # dynamodb_table = "terraform-lock-table"
+    use_lockfile = true
     region = "ap-south-1"
     encrypt = true
   }
