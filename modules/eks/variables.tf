@@ -9,6 +9,11 @@ variable "kubernetes_version" {
   default     = "1.31"
 }
 
+variable "region" {
+  description = "AWS region for the EKS cluster"
+  type        = string
+}
+
 variable "vpc_id" { type = string }
 variable "private_subnets" { type = list(string) }
 variable "public_subnets" { type = list(string) }
