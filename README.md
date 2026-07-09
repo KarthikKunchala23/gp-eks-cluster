@@ -126,19 +126,31 @@ The Helm module retrieves cluster information using Terraform Remote State and d
 
 ```terraform
 module "eks" {
-  source = "./modules/eks"
-
-  cluster_name    = "demo-cluster"
-  cluster_version = "1.34"
-
-  subnet_ids = module.vpc.private_subnets
-
-  endpoint_private_access = true
-  endpoint_public_access  = true
-
-  node_group_desired_size = 2
-  node_group_min_size     = 2
-  node_group_max_size     = 5
+    source = "../../../modules/eks"
+    cluster_name = var.cluster_name
+    cluster_version = var.cluster_version
+    region = var.region
+    kubernetes_version = var.cluster_version
+    private_subnets = module.eks-vpc.private_subnet_ids
+    encryption_config = {
+        kms_key_arn = var.kms_key_arn
+        resources = var.encryption_resources
+    }
+    env = var.env
+    ami_type = var.ami_type
+    node_instance_type = var.node_instance_type
+    node_desired_size = var.node_desired_size
+    node_max_size = var.node_max_size
+    node_min_size = var.node_min_size
+    disk_size = var.disk_size
+    vpc_id = module.eks-vpc.vpc_id
+    ebs_csi_driver_policy = var.ebs_csi_driver_policy   
+    public_subnets = module.eks-vpc.public_subnet_ids
+    depends_on = [ module.eks-vpc ]
+    endpoint_private_access = var.endpoint_private_access
+    endpoint_public_access  = var.endpoint_public_access
+    public_cidr             = var.public_cidr
+    bootstrap_self_managed_addons = var.bootstrap_self_managed_addons
 }
 ```
 
@@ -149,10 +161,13 @@ module "eks" {
 After the EKS cluster is created.
 
 ```terraform
-module "helm" {
-  source = "./modules/helm"
-
-  cluster_name = data.terraform_remote_state.eks.outputs.cluster_name
+module "custom-addons-release" {
+    source = "../../../modules/helm"
+    vpc_id = data.terraform_remote_state.gp-eks-cluster.outputs.vpc_id
+    cluster_name = data.terraform_remote_state.gp-eks-cluster.outputs.cluster_name
+    region = var.region
+    aws_secrets_provider_name = var.aws_secrets_provider_name
+    csi_secrets_store_name = var.csi_secrets_store_name
 }
 ```
 
