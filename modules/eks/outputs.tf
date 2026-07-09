@@ -28,48 +28,34 @@ output "oidc_provider_url" {
   value = aws_iam_openid_connect_provider.gp_eks.url
 }
 
-## Add-ons 
-## EKS Pod Identity Agent Addon outputs
-output "pia_addon_version_default" {
-  description = "Default Version of the EKS Pod Identity Agent Addon"
-  value       = data.aws_eks_addon_version.pia-default.version
+output "node_group_id" {
+  description = "EKS Node Group"
+  value = aws_eks_node_group.gp-eks-node-group.id
 }
 
-output "pia_addon_version_latest" {
-  description = "Latest Version of the EKS Pod Identity Agent Addon"
-  value       = data.aws_eks_addon_version.pia-latest.version
-}
 
-output "pia_addon_status" {
-  description = "Status of the EKS Pod Identity Agent Addon"
-  value       = aws_eks_addon.pia.status
-}
+## Helm Release Outputs
+# LBC Helm Release Outputs
+# output "helm_lbc_metadata" {
+#   description = "Metadata Block outlining status of the deployed release."
+#   value = helm_release.aws-load-balancer-controller.metadata
+# }
 
-output "pia_addon_arn" {
-  description = "ARN of the EKS Pod Identity Agent Addon"
-  value       = aws_eks_addon.pia.arn
-}
 
-output "pia_addon_id" {
-  description = "ID of the EKS Pod Identity Agent Addon"
-  value       = aws_eks_addon.pia.id
-}
+# ## Secrets Store CSI Driver Helm Release Outputs
+# output "helm_secrets_store_csi_driver_metadata" {
+#   description = "Metadata for the Secrets Store CSI Driver Helm release"
+#   value       = helm_release.secrets_store_csi_driver.metadata
+# }
 
-## AWS Load Balancer Controller IAM Policy outputs
-output "lbc_iam_policy_arn" {
-  description = "ARN of the AWS Load Balancer Controller IAM Policy"
-  value       = aws_iam_policy.lbc-policy.arn
-}
+# ## Secrets Store ASCP Helm Release Outputs
+# output "helm_aws_secrets_provider_metadata" {
+#   description = "Metadata for the AWS Secrets and Configuration Provider Helm release"
+#   value       = helm_release.aws_secrets_provider.metadata
+# }
 
-output "lbc_iam_role_arn" {
-  description = "ARN of the AWS Load Balancer Controller IAM Role"
-  value = aws_iam_role.lbc-role.arn
-}
 
-output "lbc_pia_association_arn" {
-  description = "ARN of the EKS Pod Identity Association for AWS Load Balancer Controller"
-  value       = aws_eks_pod_identity_association.lbc-pia-association.arn
-}
+## EBS CSI
 
 ## EBS CSI Driver Addon outputs
 output "ebs_csi_addon_default_version" {
@@ -98,28 +84,49 @@ output "ebs_csi_iam_role_arn" {
   value       = aws_iam_role.ebs_csi_iam_role.arn
 }
 
+## lbc iam 
+
+## AWS Load Balancer Controller IAM Policy outputs
+output "lbc_iam_policy_arn" {
+  description = "ARN of the AWS Load Balancer Controller IAM Policy"
+  value       = aws_iam_policy.lbc-policy.arn
+}
+
+output "lbc_iam_role_arn" {
+  description = "ARN of the AWS Load Balancer Controller IAM Role"
+  value = aws_iam_role.lbc-role.arn
+}
+
+# PIA 
+
+output "pia_addon_version_default" {
+  description = "Default Version of the EKS Pod Identity Agent Addon"
+  value       = data.aws_eks_addon_version.pia-default.version
+}
+
+output "pia_addon_version_latest" {
+  description = "Latest Version of the EKS Pod Identity Agent Addon"
+  value       = data.aws_eks_addon_version.pia-latest.version
+}
+
+
+output "pia_addon_arn" {
+  description = "ARN of the EKS Pod Identity Agent Addon"
+  value       = aws_eks_addon.pia.arn
+}
+
+output "pia_addon_id" {
+  description = "ID of the EKS Pod Identity Agent Addon"
+  value       = aws_eks_addon.pia.id
+}
+
 ## EBS CSI Pod Identity Association ARN
 output "ebs_csi_pod_identity_association_arn" {
   description = "EBS CSI Driver Pod Identity Association ARN"
   value       = aws_eks_pod_identity_association.ebs_csi.association_arn
 }
 
-## Helm Release Outputs
-# LBC Helm Release Outputs
-output "helm_lbc_metadata" {
-  description = "Metadata Block outlining status of the deployed release."
-  value = helm_release.aws-load-balancer-controller.metadata
-}
-
-
-## Secrets Store CSI Driver Helm Release Outputs
-output "helm_secrets_store_csi_driver_metadata" {
-  description = "Metadata for the Secrets Store CSI Driver Helm release"
-  value       = helm_release.secrets_store_csi_driver.metadata
-}
-
-## Secrets Store ASCP Helm Release Outputs
-output "helm_aws_secrets_provider_metadata" {
-  description = "Metadata for the AWS Secrets and Configuration Provider Helm release"
-  value       = helm_release.aws_secrets_provider.metadata
+output "lbc_pia_arn" {
+  description = "Load Balancer Controller Pod Identity Association ARN"
+  value = aws_eks_pod_identity_association.lbc-pia-association.association_arn
 }

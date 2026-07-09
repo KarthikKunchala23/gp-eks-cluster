@@ -14,6 +14,11 @@ variable "region" {
   type        = string
 }
 
+variable "cluster_version" {
+  description = "Kubernetes version for the EKS cluster"
+  type        = string
+}
+
 variable "vpc_id" { type = string }
 variable "private_subnets" { type = list(string) }
 variable "public_subnets" { type = list(string) }
@@ -60,7 +65,7 @@ variable "public_cidr" {
 variable "bootstrap_self_managed_addons" {
   description = "Whether to keep add-ons self managed by cluster or custom managed"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "endpoint_private_access" {

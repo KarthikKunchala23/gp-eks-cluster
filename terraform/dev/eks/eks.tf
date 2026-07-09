@@ -1,6 +1,7 @@
 module "eks" {
-    source = "../../modules/eks"
+    source = "../../../modules/eks"
     cluster_name = var.cluster_name
+    cluster_version = var.cluster_version
     region = var.region
     kubernetes_version = var.cluster_version
     private_subnets = module.eks-vpc.private_subnet_ids
@@ -24,5 +25,3 @@ module "eks" {
     public_cidr             = var.public_cidr
     bootstrap_self_managed_addons = var.bootstrap_self_managed_addons
 }
-
-## EKS Pod Identity Agent Addon

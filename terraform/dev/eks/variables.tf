@@ -64,7 +64,7 @@ variable "node_instance_type" {
 
 variable "node_desired_size" {
   description = "Desired number of worker nodes in the EKS cluster"
-  default     = 2
+  default     = 1
 }
 
 variable "node_min_size" {
@@ -95,7 +95,7 @@ variable "endpoint_public_access" {
 
 variable "public_cidr" {
   description = "CIDR block for public access to EKS API server endpoint"
-  default     = ["106.215.170.149/32"]
+  default     = ["106.215.171.61/32"]
 }
 
 variable "bootstrap_self_managed_addons" {

@@ -1,13 +1,13 @@
 # Install AWS Secrets and Configuration Provider (ASCP)
 resource "helm_release" "aws_secrets_provider" {
-  depends_on = [
-    aws_eks_addon.pia,
-    aws_eks_node_group.gp-eks-node-group,      
-    helm_release.secrets_store_csi_driver
-  ]
+#   depends_on = [
+#     aws_eks_addon.pia,
+#     aws_eks_node_group.gp-eks-node-group,      
+#     helm_release.secrets_store_csi_driver
+#   ]
 
 
-  name       = "secrets-provider-aws"
+  name       = var.aws_secrets_provider_name //"secrets-provider-aws"
   repository = "https://aws.github.io/secrets-store-csi-driver-provider-aws"
   chart      = "secrets-store-csi-driver-provider-aws"
   namespace  = "kube-system"

@@ -1,10 +1,10 @@
 resource "helm_release" "aws-load-balancer-controller" {
-    depends_on = [
-        aws_eks_pod_identity_association.lbc-pia-association,
-        aws_iam_role.lbc-role,
-        aws_eks_node_group.gp-eks-node-group,
-        aws_eks_addon.pia
-        ]
+    # depends_on = [
+    #     aws_eks_pod_identity_association.lbc-pia-association,
+    #     aws_iam_role.lbc-role,
+    #     aws_eks_node_group.gp-eks-node-group,
+    #     aws_eks_addon.pia
+    #     ]
     name       = "aws-load-balancer-controller"
     repository = "https://aws.github.io/eks-charts"
     chart      = "aws-load-balancer-controller"
@@ -28,7 +28,7 @@ resource "helm_release" "aws-load-balancer-controller" {
 
         {
             name = "clusterName"
-            value = aws_eks_cluster.gp-eks-cluster.name
+            value = var.cluster_name
         },
 
         {
@@ -38,7 +38,7 @@ resource "helm_release" "aws-load-balancer-controller" {
 
         {
             name = "vpcId"
-            value = aws_vpc.gp-eks-vpc.id
+            value = var.vpc_id
         }
         
     ]
