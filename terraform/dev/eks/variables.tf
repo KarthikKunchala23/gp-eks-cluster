@@ -12,7 +12,7 @@ variable "subnet_config" {
     subnet_cidr       = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24"]
     subnet_name       = "gp-eks-subnet"
     availability_zone = ["ap-south-1a", "ap-south-1c"]
-    subnet_type       = ["public", "public", "private", "private", "database", "database"]
+    subnet_type       = ["public", "public", "private", "private", "private", "private"]
   }
 }
 
@@ -24,7 +24,7 @@ variable "region" {
 
 variable "cluster_name" {
   description = "Name of the EKS cluster"
-  default     = "gp-eks-cluster"
+  default     = "gp-eks-dev-cluster"
 }
 
 variable "cluster_version" {
@@ -102,4 +102,15 @@ variable "bootstrap_self_managed_addons" {
   description = "Whether to keep add-ons self managed by cluster or custom managed"
   type        = bool
   default     = true
+}
+
+variable "tags" {
+  description = "tags for karpenter"
+  type = map(string)
+  default = {
+    Terraform   = "true"
+    Environment = "dev"
+    Project     = "karpenter-autoscaling"
+    ManagedBy   = "platform-team"
+  }
 }

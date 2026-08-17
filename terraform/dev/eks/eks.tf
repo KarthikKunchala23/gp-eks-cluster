@@ -25,3 +25,10 @@ module "eks" {
     public_cidr             = var.public_cidr
     bootstrap_self_managed_addons = var.bootstrap_self_managed_addons
 }
+
+resource "aws_eks_pod_identity_association" "karpenter" {
+  cluster_name    = module.eks.cluster_name
+  namespace       = "karpenter"
+  service_account = "karpenter"
+  role_arn        = aws_iam_role.karpenter_controller.arn
+}
