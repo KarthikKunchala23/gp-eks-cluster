@@ -8,6 +8,17 @@ data "terraform_remote_state" "gp-eks-cluster" {
     }
 }
 
+data "terraform_remote_state" "sqs-queue" {
+  backend = "s3"
+
+  config = {
+    bucket = "gp-project-s3-cindia"
+    key = "platform/terraform.tfstate"
+    region = "ap-south-1"
+  }
+}
+
+
 data "aws_eks_cluster" "this" {
   name = data.terraform_remote_state.gp-eks-cluster.outputs.cluster_name
 }

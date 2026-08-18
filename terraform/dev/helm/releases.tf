@@ -5,4 +5,14 @@ module "custom-addons-release" {
     region = var.region
     aws_secrets_provider_name = var.aws_secrets_provider_name
     csi_secrets_store_name = var.csi_secrets_store_name
+    karpenter_name = "karpenter-controller"
+    chart_version = "1.8.2"
+    namespace = "karpenter"
+    create_namespace = true
+    cluster_endpoint = data.terraform_remote_state.gp-eks-cluster.outputs.cluster_endpoint
+    sqs_queue_name = "gp-eks-dev-karpenter-interruption"
+
+    depends_on = [ 
+        data.aws_eks_cluster.this,
+    ]
 }

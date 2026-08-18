@@ -18,3 +18,9 @@ output "helm_aws_secrets_provider_metadata" {
   description = "Metadata for the AWS Secrets and Configuration Provider Helm release"
   value       = helm_release.aws_secrets_provider.metadata
 }
+
+#karpenter helm metadata
+output "karpenter_helm_metadata" {
+  description = "Metadata for Karpenter Controller Helm release"
+  value       = helm_release.karpenter.metadata
+}
