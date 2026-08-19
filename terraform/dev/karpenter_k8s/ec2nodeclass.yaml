@@ -1,0 +1,36 @@
+apiVersion: karpenter.k8s.aws/v1
+kind: EC2NodeClass
+metadata:
+  name: karpenter-default-ec2nodeclass
+
+spec:
+  amiFamily: AL2023
+
+  amiSelectorTerms:
+    - alias: al2023@latest
+
+  role: "arn:aws:iam::897722700244:role/gp-eks-dev-cluster-karpenter-node-role"
+
+  subnetSelectorTerms:
+    - tags:
+        kubernetes.io/cluster/gp-eks-dev-cluster: owned
+        kubernetes.io/role/internal-elb: "1"
+
+  securityGroupSelectorTerms:
+    - tags:
+        kubernetes.io/cluster/gp-eks-dev-cluster: owned
+
+  tags:
+    karpenter.sh/discovery: gp-eks-dev-cluster
+
+  blockDeviceMappings:
+    - deviceName: /dev/xvda
+      ebs:
+        volumeSize: 20Gi
+        volumeType: gp3
+        encrypted: true
+        deleteOnTermination: true
+
+  metadataOptions:
+    httpTokens: required
+    httpPutResponseHopLimit: 2
