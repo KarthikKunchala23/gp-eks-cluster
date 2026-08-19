@@ -17,6 +17,8 @@ resource "aws_subnet" "gp-eks-subnet" {
     tags = {
         Name = "${var.subnet_config.subnet_name}-${var.subnet_config.subnet_type[count.index]}-${count.index}"
         Type = var.subnet_config.subnet_type[count.index]
+        "kubernetes.io/cluster/gp-eks-dev-cluster" = var.subnet_config.subnet_type[count.index] == "private" ? "owned" : ""
+        "kubernetes.io/role/internal-elb"          = var.subnet_config.subnet_type[count.index] == "private" ? "1" : ""
     }
 }
 

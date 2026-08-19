@@ -10,7 +10,7 @@ module "custom-addons-release" {
     namespace = "karpenter"
     create_namespace = true
     cluster_endpoint = data.terraform_remote_state.gp-eks-cluster.outputs.cluster_endpoint
-    sqs_queue_name = "gp-eks-dev-karpenter-interruption"
+    sqs_queue_name = "gp-eks-dev-cluster-karpenter-interruption"
 
     depends_on = [ 
         data.aws_eks_cluster.this,

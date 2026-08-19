@@ -32,7 +32,7 @@ resource "helm_release" "karpenter" {
     },
     {
       name = "replicas"
-      value = "1"
+      value = "2"
     }
   ]
 
