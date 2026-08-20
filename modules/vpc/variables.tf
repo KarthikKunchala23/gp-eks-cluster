@@ -15,3 +15,9 @@ variable "subnet_config" {
     subnet_type = list(string)  #public/private 
   })
 }
+
+
+variable "cluster_name" {
+  description = "Name of the EKS Cluster"
+  type = string
+}

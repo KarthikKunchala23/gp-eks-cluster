@@ -14,12 +14,19 @@ resource "aws_subnet" "gp-eks-subnet" {
     cidr_block = var.subnet_config.subnet_cidr[count.index]
     availability_zone = var.subnet_config.availability_zone[count.index % length(var.subnet_config.availability_zone)]
     map_public_ip_on_launch = var.subnet_config.subnet_type[count.index] == "public"
-    tags = {
+    tags = merge(
+      {
         Name = "${var.subnet_config.subnet_name}-${var.subnet_config.subnet_type[count.index]}-${count.index}"
         Type = var.subnet_config.subnet_type[count.index]
-        "kubernetes.io/cluster/gp-eks-dev-cluster" = var.subnet_config.subnet_type[count.index] == "private" ? "owned" : ""
-        "kubernetes.io/role/internal-elb"          = var.subnet_config.subnet_type[count.index] == "private" ? "1" : ""
-    }
+        },
+        var.subnet_config.subnet_type[count.index] == "public" ? {
+            "kubernetes.io/role/elb" = "1"
+            "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+          } : {
+            "kubernetes.io/role/internal-elb" = "1"
+            "kubernetes.io/cluster/${var.cluster_name}" = "owned"
+          }
+    )
 }
 
 resource "aws_internet_gateway" "gp-eks-igw" {

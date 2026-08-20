@@ -2,11 +2,13 @@
 
 # Terraform AWS EKS Cluster Module
 
-A production-ready Terraform module for provisioning an Amazon EKS cluster on AWS with best practices for networking, security, and Kubernetes add-ons.
+A production-ready Terraform module for provisioning an Amazon EKS cluster on AWS with best practices for networking, security, Node Auto Scaling and Kubernetes add-ons.
 
-This module creates an Amazon EKS cluster (Kubernetes **v1.34**) deployed into private subnets with configurable public and private API endpoint access. It also provisions managed node groups, essential IAM roles, security groups, and EKS add-ons required for running production workloads.
+This module creates an Amazon EKS cluster (Kubernetes **v1.34**) deployed into private subnets with configurable public and private API endpoint access. It also provisions managed node groups and Karpenter Node Auto Scaling, essential IAM roles, security groups, and EKS add-ons required for running production workloads.
 
-Additional Kubernetes applications such as the AWS Load Balancer Controller and Secrets Store CSI Driver are intentionally deployed through a separate Helm module to simplify dependency management and avoid provider initialization issues.
+Additional Kubernetes applications such as the AWS Load Balancer Controller, Secrets Store CSI Driver and Karpenter Controller are intentionally deployed through a separate Helm module to simplify dependency management and avoid provider initialization issues.
+
+Kubernetes ec2nodeclass and nodepools along with testing manifest yaml are avialable at terraform/dev/karpenter_k8s/
 
 ---
 
@@ -14,9 +16,8 @@ Additional Kubernetes applications such as the AWS Load Balancer Controller and 
 
 - Amazon EKS Kubernetes **v1.34**
 - Private worker nodes
-- Managed Node Groups
+- Managed Node Groups and Karpenter Managed Node Pools
 - Configurable public/private API endpoint access
-- Custom Launch Template support
 - IAM Roles for Service Accounts (IRSA)
 - EKS Pod Identity support
 - Amazon EBS CSI Driver add-on
@@ -91,6 +92,7 @@ The EKS module provisions the following resources.
 - Cluster Security Group
 - Node Security Group
 - Launch Template
+- EKS Access Entry
 
 ### IAM
 
@@ -98,6 +100,7 @@ The EKS module provisions the following resources.
 - Node Group IAM Role
 - IAM Roles for Service Accounts
 - Pod Identity Associations
+- Karpenter Node IAM Role with Managed Policies and Controller IAM Role
 
 ### EKS Add-ons
 
@@ -117,6 +120,47 @@ The Helm module retrieves cluster information using Terraform Remote State and d
 - AWS Load Balancer Controller
 - Secrets Store CSI Driver
 - AWS Secrets & Configuration Provider (ASCP)
+- Karpenter Controller
+
+---
+
+---
+
+# Kubernetes Manifests
+
+We have provided EC2NodeClass, Spot and On-demand NodePools along with Testing deployments of karpenter
+
+- ec2nodeclass
+- spot nodepool
+- on-demand nodepool
+- deployments for testing
+
+---
+
+---
+
+# Karpenter Node Auto Scaling
+
+This Project uses Karpenter for Scaling Nodes intiligently.
+
+This design avoids dependency on cluster auto scaling native to eks.
+
+We use on-demand and spot nodepools with ec2 nodeclass.
+
+Karpenter can handle the spot interuptions smartly using podDisruptionBudget where we can achieve zero down time.
+
+Karpenter polls AWS SQS Queue for every 30s for any interuptions from AWS this events can be catched by Amazom Event Bridge Rules which triger to sqs queue.
+
+- Karpenter
+- PDB
+- EC2NodeClass
+- NodePools(Spot & On-demand)
+- SQS & Event Bridge
+
+Example logs from karpenter controller for polling message on SQS: 
+
+{"level":"INFO","time":"2026-08-20T10:30:33.740Z","logger":"controller","message":"initiating delete from interruption message","commit":"f913f41","controller":"interruption","namespace":"","name":"","reconcileID":"f8de975e-1a21-4f9f-b95a-5d929eb92b05","queue":"gp-eks-dev-cluster-karpenter-interruption","messageKind":"spot_interrupted","NodeClaim":{"name":"spot-nodepool-5pff2"},"action":"CordonAndDrain","Node":{"name":"ip-10-0-5-103.ap-south-1.compute.internal"}}
+
 
 ---
 
@@ -217,6 +261,7 @@ Deploy Helm Releases
         ├──────── AWS Load Balancer Controller
         ├──────── Secrets Store CSI Driver
         └──────── AWS Secrets Configuration Provider
+        └──────── Karpenter Controller
 ```
 
 ---
@@ -265,9 +310,9 @@ Refer to the Terraform Registry Outputs section after publishing.
 
 ## Future Enhancements
 
-- Karpenter support
-- AWS VPC CNI customization
-- ExternalDNS
+- Karpenter support ✅
+- AWS VPC CNI customization ✅
+- ExternalDNS ✅
 - Metrics Server
 - Cluster Autoscaler
 - Argo CD
