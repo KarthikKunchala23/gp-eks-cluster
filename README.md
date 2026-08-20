@@ -141,7 +141,7 @@ We have provided EC2NodeClass, Spot and On-demand NodePools along with Testing d
 
 # Karpenter Node Auto Scaling
 
-This Project uses Karpenter for Scaling Nodes intiligently.
+This Project uses Karpenter for Scaling Nodes intelligently and cost savings.
 
 This design avoids dependency on cluster auto scaling native to eks.
 
