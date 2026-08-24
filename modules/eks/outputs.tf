@@ -130,3 +130,35 @@ output "lbc_pia_arn" {
   description = "Load Balancer Controller Pod Identity Association ARN"
   value = aws_eks_pod_identity_association.lbc-pia-association.association_arn
 }
+
+#External DNS
+output "externaldns_addon_version" {
+  value = aws_eks_addon.externaldns.addon_version
+}
+
+output "externaldns_addon_arn" {
+  value = aws_eks_addon.externaldns.arn
+}
+
+output "externaldns_addon_id" {
+  value = aws_eks_addon.externaldns.id
+}
+
+# Metric server add-ons
+
+
+output "metrics_server_eksaddon_default_version" {
+  value = data.aws_eks_addon_version.metrics_server_default.version
+}
+
+output "metrics_server_eksaddon_lastest_version" {
+  value = data.aws_eks_addon_version.metrics_server_latest.version
+}
+
+output "metrics_server_agent_eksaddon_arn" {
+  value = aws_eks_addon.metrics_server.arn
+}  
+
+output "metrics_server_agent_eksaddon_id" {
+  value = aws_eks_addon.metrics_server.id
+}
