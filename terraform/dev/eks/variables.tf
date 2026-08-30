@@ -95,7 +95,7 @@ variable "endpoint_public_access" {
 
 variable "public_cidr" {
   description = "CIDR block for public access to EKS API server endpoint"
-  default     = ["106.215.171.61/32"]
+  default     = ["106.215.169.51/32"]
 }
 
 variable "bootstrap_self_managed_addons" {
