@@ -19,4 +19,5 @@ resource "aws_eks_addon" "metrics_server" {
   resolve_conflicts_on_update = "OVERWRITE"
   # Use the latest EKS addon version compatible with the cluster's Kubernetes version
   addon_version               = data.aws_eks_addon_version.metrics_server_latest.version
+  depends_on = [ aws_eks_node_group.gp-eks-node-group ]
 }

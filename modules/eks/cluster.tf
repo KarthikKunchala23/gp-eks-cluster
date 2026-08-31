@@ -93,30 +93,5 @@ resource "aws_eks_node_group" "gp-eks-node-group" {
     source_security_group_ids = [aws_security_group.eks_nodes_sg.id]
   }
 
-  depends_on = [aws_eks_cluster.gp-eks-cluster]
+  # depends_on = [aws_eks_cluster.gp-eks-cluster]
 }
-
-
-# -------------------------
-# EKS EBS CSI Driver Addon
-# -------------------------
-# data "aws_eks_addon_version" "ebs_csi" {
-#   addon_name           = "aws-ebs-csi-driver"
-#   kubernetes_version   = aws_eks_cluster.gp-eks-cluster.version
-#   most_recent          = true
-# }
-# resource "aws_eks_addon" "ebs_csi_driver" {
-#   cluster_name = aws_eks_cluster.gp-eks-cluster.name
-#   addon_version = data.aws_eks_addon_version.ebs_csi.version
-#   addon_name   = "aws-ebs-csi-driver"
-#   resolve_conflicts_on_create = "OVERWRITE"
-#   resolve_conflicts_on_update = "PRESERVE"
-#   service_account_role_arn = aws_iam_role.gp_eks_addons.arn
-
-#   depends_on = [
-#     aws_iam_role.gp_eks_addons,
-#     aws_iam_policy_attachment.gp_ebs_csi_driver_attach,
-#     aws_eks_cluster.gp-eks-cluster,
-#     aws_eks_node_group.gp-eks-node-group
-#   ]
-# }
