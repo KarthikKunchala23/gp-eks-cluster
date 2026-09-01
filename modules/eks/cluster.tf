@@ -88,10 +88,22 @@ resource "aws_eks_node_group" "gp-eks-node-group" {
   # }
   ami_type = var.ami_type != "" ? var.ami_type : "AL2023_x86_64_STANDARD"
 
-  remote_access {
-    ec2_ssh_key = "jfrog_vm"
-    source_security_group_ids = [aws_security_group.eks_nodes_sg.id]
+  # No remote_access block on purpose. Specifying it makes EKS create and own an
+  # "eks-remoteAccess-*" security group that it must delete as the last step of a
+  # node group teardown. Any leaked VPC CNI ENI still referencing that SG turns the
+  # delete into a DependencyViolation, and EKS retries until the node group lands in
+  # DELETE_FAILED. Node shell access goes through SSM Session Manager instead
+  # (AmazonSSMManagedInstanceCore on the node role).
+
+  # Fail fast rather than sitting on the provider's 60 minute default.
+  timeouts {
+    delete = "20m"
   }
 
-  # depends_on = [aws_eks_cluster.gp-eks-cluster]
+  depends_on = [
+    aws_iam_role_policy_attachment.gp_node_AmazonEKSWorkerNodePolicy,
+    aws_iam_role_policy_attachment.gp_node_AmazonEC2ContainerRegistryPullOnly,
+    aws_iam_role_policy_attachment.gp_node_AmazonEKS_CNI_Policy,
+    aws_iam_role_policy_attachment.gp_node_AmazonSSMManagedInstanceCore,
+  ]
 }

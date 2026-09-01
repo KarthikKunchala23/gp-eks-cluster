@@ -87,6 +87,13 @@ resource "aws_iam_role_policy_attachment" "gp_node_AmazonEKS_CNI_Policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
+# Replaces SSH remote access on the node group: shell into nodes with
+# `aws ssm start-session --target <instance-id>`.
+resource "aws_iam_role_policy_attachment" "gp_node_AmazonSSMManagedInstanceCore" {
+  role       = aws_iam_role.gp-eks-node-group-role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 
 
 # IAM Role for eks addons
