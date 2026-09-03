@@ -13,6 +13,7 @@ data "aws_eks_addon_version" "metrics_server_latest" {
 
 # EKS Addon: Pod Identity Agent
 resource "aws_eks_addon" "metrics_server" {
+  count                     = var.enable_metrics_server ? 1 : 0
   cluster_name                = aws_eks_cluster.gp-eks-cluster.name
   addon_name                  = "metrics-server"
   resolve_conflicts_on_create = "OVERWRITE"

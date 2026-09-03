@@ -13,9 +13,9 @@ data "aws_eks_addon_version" "ebs_csi_latest" {
 
 # Resource: Install EBS CSI Driver addon
 resource "aws_eks_addon" "ebs_csi" {
+  count                     = var.enable_aws_ebs_csi_driver ? 1 : 0
   depends_on = [
-    aws_iam_role.ebs_csi_iam_role,
-    aws_eks_pod_identity_association.ebs_csi,
+    aws_eks_pod_identity_association.pia-association,
     aws_eks_addon.pia,
     aws_eks_node_group.gp-eks-node-group
   ]
@@ -23,7 +23,7 @@ resource "aws_eks_addon" "ebs_csi" {
   addon_name                  = "aws-ebs-csi-driver"
   addon_version               = data.aws_eks_addon_version.ebs_csi_latest.version
 
-  service_account_role_arn    = aws_iam_role.ebs_csi_iam_role.arn
+  service_account_role_arn    = var.ebs_csi_driver_role_arn
 
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"

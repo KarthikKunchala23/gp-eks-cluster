@@ -70,32 +70,32 @@ output "ebs_csi_addon_latest_version" {
 
 output "ebs_csi_addon_arn" {
   description = "ARN of the installed EBS CSI addon"
-  value       = aws_eks_addon.ebs_csi.arn
+  value       = var.enable_aws_ebs_csi_driver ? aws_eks_addon.ebs_csi[0].arn : null
 }
 
 output "ebs_csi_addon_id" {
   description = "ID of the installed EBS CSI addon"
-  value       = aws_eks_addon.ebs_csi.id
+  value       = var.enable_aws_ebs_csi_driver ? aws_eks_addon.ebs_csi[0].id : null
 }
 
 ## EBS CSI Driver IAM Role outputs
-output "ebs_csi_iam_role_arn" {
-  description = "IAM Role ARN for Amazon EBS CSI Driver"
-  value       = aws_iam_role.ebs_csi_iam_role.arn
-}
+# output "ebs_csi_iam_role_arn" {
+#   description = "IAM Role ARN for Amazon EBS CSI Driver"
+#   value       = aws_iam_role.ebs_csi_iam_role.arn
+# }
 
 ## lbc iam 
 
 ## AWS Load Balancer Controller IAM Policy outputs
-output "lbc_iam_policy_arn" {
-  description = "ARN of the AWS Load Balancer Controller IAM Policy"
-  value       = aws_iam_policy.lbc-policy.arn
-}
+# output "lbc_iam_policy_arn" {
+#   description = "ARN of the AWS Load Balancer Controller IAM Policy"
+#   value       = aws_iam_policy.lbc-policy.arn
+# }
 
-output "lbc_iam_role_arn" {
-  description = "ARN of the AWS Load Balancer Controller IAM Role"
-  value = aws_iam_role.lbc-role.arn
-}
+# output "lbc_iam_role_arn" {
+#   description = "ARN of the AWS Load Balancer Controller IAM Role"
+#   value = aws_iam_role.lbc-role.arn
+# }
 
 # PIA 
 
@@ -111,37 +111,36 @@ output "pia_addon_version_latest" {
 
 
 output "pia_addon_arn" {
-  description = "ARN of the EKS Pod Identity Agent Addon"
-  value       = aws_eks_addon.pia.arn
+  value = var.enable_aws_pia ? aws_eks_addon.pia[0].arn : null
 }
 
 output "pia_addon_id" {
   description = "ID of the EKS Pod Identity Agent Addon"
-  value       = aws_eks_addon.pia.id
+  value       = var.enable_aws_pia ? aws_eks_addon.pia[0].id : null
 }
 
 ## EBS CSI Pod Identity Association ARN
-output "ebs_csi_pod_identity_association_arn" {
-  description = "EBS CSI Driver Pod Identity Association ARN"
-  value       = aws_eks_pod_identity_association.ebs_csi.association_arn
-}
+# output "ebs_csi_pod_identity_association_arn" {
+#   description = "EBS CSI Driver Pod Identity Association ARN"
+#   value       = aws_eks_pod_identity_association.ebs_csi.association_arn
+# }
 
-output "lbc_pia_arn" {
-  description = "Load Balancer Controller Pod Identity Association ARN"
-  value = aws_eks_pod_identity_association.lbc-pia-association.association_arn
-}
+# output "lbc_pia_arn" {
+#   description = "Load Balancer Controller Pod Identity Association ARN"
+#   value = aws_eks_pod_identity_association.lbc-pia-association.association_arn
+# }
 
 #External DNS
 output "externaldns_addon_version" {
-  value = aws_eks_addon.externaldns.addon_version
+  value = var.enable_external_dns ? aws_eks_addon.externaldns[0].addon_version : null
 }
 
 output "externaldns_addon_arn" {
-  value = aws_eks_addon.externaldns.arn
+  value = var.enable_external_dns ? aws_eks_addon.externaldns[0].arn : null
 }
 
 output "externaldns_addon_id" {
-  value = aws_eks_addon.externaldns.id
+  value = var.enable_external_dns ? aws_eks_addon.externaldns[0].id : null
 }
 
 # Metric server add-ons
@@ -156,9 +155,9 @@ output "metrics_server_eksaddon_lastest_version" {
 }
 
 output "metrics_server_agent_eksaddon_arn" {
-  value = aws_eks_addon.metrics_server.arn
-}  
+  value = var.enable_metrics_server ? aws_eks_addon.metrics_server[0].arn : null
+}
 
 output "metrics_server_agent_eksaddon_id" {
-  value = aws_eks_addon.metrics_server.id
+  value = var.enable_metrics_server ? aws_eks_addon.metrics_server[0].id : null
 }

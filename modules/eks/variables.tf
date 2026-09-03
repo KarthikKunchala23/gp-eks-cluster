@@ -50,12 +50,6 @@ variable "env" {
   default     = "dev"
 }
 
-variable "ebs_csi_driver_policy" {
-  description = "IAM Policy for EBS CSI DRIVER"
-  type        = string
-  default     = ""
-}
-
 variable "public_cidr" {
   description = "Public Ip CIDR to access EKS Endpoint"
   type = list(string)
@@ -78,4 +72,59 @@ variable "endpoint_public_access" {
   description = "EKS Cluster endpoint public access"
   type = bool
   default = false
+}
+
+
+# addon variables
+
+variable "enable_aws_ebs_csi_driver" {
+  description = "Enable AWS EBS CSI Driver"
+  type        = bool
+  default     = false
+}
+
+variable "enable_aws_pia" {
+  description = "Enable AWS Pod Identity add-on"
+  type        = bool
+  default     = true
+}
+
+variable "enable_external_dns" {
+  description = "Enable External DNS add-on"
+  type        = bool
+  default     = false
+}
+
+variable "enable_metrics_server" {
+  description = "Enable Metrics Server add-on"
+  type        = bool
+  default     = false
+}
+
+variable "pod_identities" {
+  description = "Map of pod identities to be created in the EKS cluster"
+  type = map(object({
+    namespace = string
+    service_account = string
+    role_arn = string
+  }))
+  default = {}
+}
+
+variable "external_dns_service_account_role_arn" {
+  description = "ARN of the IAM role for External DNS service account"
+  type        = string
+  default     = ""
+}
+
+variable "ebs_csi_driver_policy" {
+  description = "IAM Policy for EBS CSI DRIVER"
+  type        = string
+  default     = ""
+}
+
+variable "ebs_csi_driver_role_arn" {
+  description = "ARN of the IAM role for EBS CSI Driver service account"
+  type        = string
+  default     = ""
 }

@@ -6,9 +6,9 @@ data "aws_eks_addon_version" "externaldns_latest" {
 
 
 resource "aws_eks_addon" "externaldns" {
+  count                     = var.enable_external_dns ? 1 : 0
   depends_on = [
-    aws_iam_role.externaldns_role,
-    aws_eks_pod_identity_association.externaldns,
+    aws_eks_pod_identity_association.pia-association,
     aws_eks_addon.pia,
     aws_eks_node_group.gp-eks-node-group
   ]  
@@ -19,7 +19,7 @@ resource "aws_eks_addon" "externaldns" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
-  service_account_role_arn = aws_iam_role.externaldns_role.arn
+  service_account_role_arn = var.external_dns_service_account_role_arn
 
   tags = {
     Component   = "ExternalDNS"

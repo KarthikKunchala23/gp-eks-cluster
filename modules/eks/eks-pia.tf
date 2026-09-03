@@ -11,6 +11,7 @@ data "aws_eks_addon_version" "pia-latest" {
 
 ## EKS Pod Identity Agent Addon
 resource "aws_eks_addon" "pia" {
+    count = var.enable_aws_pia ? 1 : 0
     depends_on = [aws_eks_node_group.gp-eks-node-group]
     cluster_name = aws_eks_cluster.gp-eks-cluster.name
     addon_name = "eks-pod-identity-agent"
@@ -20,26 +21,12 @@ resource "aws_eks_addon" "pia" {
 }
 
 
-## EKS Pod identity Association for Load Balancer Controller
-resource "aws_eks_pod_identity_association" "lbc-pia-association" {
+## EKS Pod identity Association
+resource "aws_eks_pod_identity_association" "pia-association" {
+    for_each = var.enable_aws_pia ? var.pod_identities : {}
+    depends_on = [aws_eks_addon.pia]
     cluster_name = aws_eks_cluster.gp-eks-cluster.name
-    namespace = "kube-system"
-    service_account = "aws-load-balancer-controller"
-    role_arn = aws_iam_role.lbc-role.arn
-}
-
-## EKS Pod identity Association for EBS CSI Driver
-resource "aws_eks_pod_identity_association" "ebs_csi" {
-  cluster_name    = aws_eks_cluster.gp-eks-cluster.name
-  namespace       = "kube-system"
-  service_account = "ebs-csi-controller-sa"
-  role_arn        = aws_iam_role.ebs_csi_iam_role.arn
-}
-
-# EKS External DNS PIA
-resource "aws_eks_pod_identity_association" "externaldns" {
-  cluster_name    = aws_eks_cluster.gp-eks-cluster.name
-  namespace       = "external-dns"
-  service_account = "external-dns"
-  role_arn        = aws_iam_role.externaldns_role.arn
+    namespace = each.value.namespace
+    service_account = each.value.service_account
+    role_arn = each.value.role_arn
 }
