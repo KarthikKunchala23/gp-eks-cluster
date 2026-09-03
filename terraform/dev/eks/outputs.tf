@@ -24,10 +24,10 @@ output "karpenter_controller_role_arn" {
 }
 
 
-output "karpenter_controller_pod_identity_association" {
-  description = "Pod Identity association ID for the Karpenter controller"
-  value       = aws_eks_pod_identity_association.karpenter.id
-}
+# output "karpenter_controller_pod_identity_association" {
+#   description = "Pod Identity association ID for the Karpenter controller"
+#   value       = aws_eks_pod_identity_association.karpenter.id
+# }
 
 output "karpenter_node_role_name" {
   description = "IAM Role Name used by EC2 nodes launched by Karpenter"
@@ -44,7 +44,7 @@ output "karpenter_node_role_unique_id" {
   value       = aws_iam_role.karpenter_node.unique_id
 }
 
-output "pia-assc-karpenter" {
-  description = "pod identity association for karpenter"
-  value = aws_eks_pod_identity_association.karpenter.association_arn
-}
+# output "pia-assc-karpenter" {
+#   description = "pod identity association for karpenter"
+#   value = aws_eks_pod_identity_association.karpenter.association_arn
+# }

@@ -114,3 +114,27 @@ variable "tags" {
     ManagedBy   = "platform-team"
   }
 }
+
+variable "enable_external_dns" {
+  description = "Enable external DNS"
+  type        = bool
+  default     = true
+}
+
+variable "enable_metrics_server" {
+  description = "Enable metrics server"
+  type        = bool
+  default     = true
+}
+
+variable "enable_aws_pia" {
+  description = "Enable AWS Pod Identity add-on"
+  type        = bool
+  default     = true
+}
+
+variable "enable_aws_ebs_csi_driver" {
+  description = "Enable AWS EBS CSI Driver"
+  type        = bool
+  default     = true
+}
