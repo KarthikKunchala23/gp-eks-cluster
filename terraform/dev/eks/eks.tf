@@ -27,7 +27,7 @@ module "eks" {
     # Add-ons 
     enable_aws_ebs_csi_driver = var.enable_aws_ebs_csi_driver
     ebs_csi_driver_role_arn = var.enable_aws_ebs_csi_driver ? aws_iam_role.ebs_csi_iam_role[0].arn : null
-    external_dns_service_account_role_arn = var.enable_external_dns ? aws_iam_role.externaldns_role[0].arn : null
+    # external_dns_service_account_role_arn = var.enable_external_dns ? aws_iam_role.externaldns_role[0].arn : null
     enable_external_dns = var.enable_external_dns
     enable_aws_pia = var.enable_aws_pia
     enable_metrics_server = var.enable_metrics_server
@@ -48,7 +48,7 @@ module "eks" {
             role_arn = var.enable_aws_ebs_csi_driver ? aws_iam_role.ebs_csi_iam_role[0].arn : null
         }
         external_dns = {
-            namespace = "kube-system"
+            namespace = "external-dns"
             service_account = "external-dns"
             role_arn = var.enable_external_dns ? aws_iam_role.externaldns_role[0].arn : null
         }

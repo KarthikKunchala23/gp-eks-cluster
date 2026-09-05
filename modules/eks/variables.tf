@@ -22,7 +22,7 @@ variable "cluster_version" {
 variable "vpc_id" { type = string }
 variable "private_subnets" { type = list(string) }
 variable "public_subnets" { type = list(string) }
-variable "node_instance_type" { type = string }
+variable "node_instance_type" { type = list(string) }
 variable "node_min_size" { type = number }
 variable "node_desired_size" { type = number }
 variable "node_max_size" { type = number }
@@ -111,11 +111,11 @@ variable "pod_identities" {
   default = {}
 }
 
-variable "external_dns_service_account_role_arn" {
-  description = "ARN of the IAM role for External DNS service account"
-  type        = string
-  default     = ""
-}
+# variable "external_dns_service_account_role_arn" {
+#   description = "ARN of the IAM role for External DNS service account"
+#   type        = string
+#   default     = ""
+# }
 
 variable "ebs_csi_driver_policy" {
   description = "IAM Policy for EBS CSI DRIVER"

@@ -19,7 +19,14 @@ resource "aws_eks_addon" "externaldns" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
 
-  service_account_role_arn = var.external_dns_service_account_role_arn
+  # service_account_role_arn = var.external_dns_service_account_role_arn
+
+  configuration_values = jsonencode({
+    policy = "sync"
+    registry = "txt"
+    txtOwnerId = aws_eks_cluster.gp-eks-cluster.name
+    domainFilters = ["cloudlearningtraining.com "]
+  })
 
   tags = {
     Component   = "ExternalDNS"

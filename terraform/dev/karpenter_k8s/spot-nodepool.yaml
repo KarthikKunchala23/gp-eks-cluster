@@ -32,7 +32,7 @@ spec:
         # Allow micro to large - flexibility helps find available spot capacity
         - key: karpenter.k8s.aws/instance-size
           operator: In
-          values: ["micro", "small", "medium", "large"]
+          values: ["medium", "large"]
         # Must match the AZs where your EKS cluster has subnets configured
         # Karpenter can only launch nodes in AZs with configured VPC subnets
         - key: topology.kubernetes.io/zone
